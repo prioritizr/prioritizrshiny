@@ -32,11 +32,7 @@ Depends:
     raster,
     sp,
     shiny,
-<<<<<<< HEAD
     prioritizr
-=======
-    prioritzr
->>>>>>> 0b73f4bbf8a48c37af06737b0c829bc68a03b76c
 LinkingTo: Rcpp, RcppArmadillo, BH
 License: GPL-3
 LazyData: true
