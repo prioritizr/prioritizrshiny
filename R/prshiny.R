@@ -1,6 +1,6 @@
 prshiny <- function(app) {
   # locate all the shiny apps that exist
-  validapps <- list.files(system.file("shiny-apps", package = "prioritzrshiny"))
+  validapps <- list.files(system.file("shiny-apps", package = "prioritizrshiny"))
   
   validappsMsg <-
     paste0(
@@ -12,12 +12,12 @@ prshiny <- function(app) {
   if (missing(app) || !nzchar(app) ||
       !app %in% validapps) {
     stop(
-      'Please run `runapp()` with a valid app app as an argument.\n',
+      'Please run `prshiny()` with a valid app as an argument.\n',
       validappsMsg,
       call. = FALSE)
   }
   
   # find and launch the app
-  appDir <- system.file("shiny-apps", app, package = "prioritzrshiny")
+  appDir <- system.file("shiny-apps", app, package = "prioritizrshiny")
   shiny::runApp(appDir, display.mode = "normal")
 }
