@@ -32,6 +32,8 @@ Depends:
     raster,
     sp,
     shiny,
+    shinydashboard,
+    leaflet,
     prioritizr
 LinkingTo: Rcpp, RcppArmadillo, BH
 License: GPL-3
