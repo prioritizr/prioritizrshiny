@@ -34,7 +34,9 @@ Depends:
     shiny,
     shinydashboard,
     leaflet,
-    prioritizr
+    prioritizr,
+    rgdal,
+    shinyjs
 LinkingTo: Rcpp, RcppArmadillo, BH
 License: GPL-3
 LazyData: true
