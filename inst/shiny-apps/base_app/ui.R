@@ -54,8 +54,34 @@ body <-  dashboardBody(
                       
              ),
              tabPanel("Constraints", "Tab content Constraints"),
-             tabPanel("Penalties", "Tab content Penalties")
-             
+             tabPanel("Penalties", 
+                      p("A penalty can be applied to a conservation planning 
+                        problem to penalize solutions according to a specific metric. 
+                        Penalties---unlike constraints---act as an explicit trade-off with the 
+                        objective being minimized or maximized (e.g. total solution cost given 
+                        add_min_set_objective)."),
+                      selectizeInput("penalty", "Do you want to use a penalty function?", 
+                                     choices = c("No penalty" = "none",
+                                                 "Boundary penalty" = "bound",
+                                                 "Connectivity penalty" = "conn"),
+                                     selected = NULL, multiple = FALSE),
+                      shinyjs::hidden(
+                        div(id = "pen_bound",
+                            numericInput("penalty", "Penalty", 0),
+                            textInput("edge_factor", "Edge factor", 0)
+                            )
+                      ),
+                      
+                      shinyjs::hidden(
+                        div(id = "pen_conn",
+                            numericInput("age", "Age", 30),
+                            textInput("company", "Company", "")
+                        )
+                      )
+
+                      ),
+
+                      
            )
     ),
     column(width = 7,
