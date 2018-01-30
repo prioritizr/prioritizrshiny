@@ -64,6 +64,23 @@ function(input, output, session) {
   })
   
   observe({
+    if (input$objective == "min_set") {
+      shinyjs::show("targets")
+    } else {
+      shinyjs::hide("targets")
+    }
+  })
+  
+  observe({
+    if (input$glob_tar == "global") {
+      shinyjs::show("tar_all")
+    } else {
+      shinyjs::hide("tar_all")
+    }
+  })
+  
+
+  observe({
     if (input$penalty == "bound") {
       shinyjs::show("pen_bound")
     } else {
@@ -78,6 +95,7 @@ function(input, output, session) {
       shinyjs::hide("pen_conn")
     }
   })
+
   
   
   

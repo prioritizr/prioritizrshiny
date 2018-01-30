@@ -12,6 +12,8 @@ body <-  dashboardBody(
              title = "Inputs",
              # The id lets us use input$tabset1 on the server to find the current tab
              id = "tabset1", width = NULL,height = "600px", 
+             
+             ## DATA
              tabPanel("Data", 
                h4("Upload your data"),
                p("By specifying the inputs below you can supply data to generate the problem"),
@@ -37,25 +39,46 @@ body <-  dashboardBody(
           
               "Once"  
                ),
-             tabPanel("Objective",
-                      selectizeInput("objective", "What objective function do you want to use?", 
-                                     choices = c("Minimum set" = "min_set",
-                                                 "Maximum cover" = "max_cov",
-                                                 "Maximum features" = "max_feat",
-                                                 "Maximum phylogeny" = "max_phylo",
-                                                 "Maximum untility" = "max_util"),
-                                     selected = NULL, multiple = FALSE),
-                      shinyjs::hidden(
-                        numericInput("budget", "Set the budget", value = 0)
-                      ),
-                      shinyjs::hidden(
-                        textAreaInput("phylo", "Add Maximum Phylogenetic Representation Objective", value = "Not sure what we need here")
-                      )
-                      
-             ),
-             tabPanel("Constraints", "Tab content Constraints"),
-             tabPanel("Penalties", 
-                      p("A penalty can be applied to a conservation planning 
+          
+               ## OBJECTIVES
+               tabPanel("Objective",
+                        selectizeInput("objective", "What objective function do you want to use?", 
+                                       choices = c("Minimum set" = "min_set",
+                                                   "Maximum cover" = "max_cov",
+                                                   "Maximum features" = "max_feat",
+                                                   "Maximum phylogeny" = "max_phylo",
+                                                   "Maximum untility" = "max_util"),
+                                       selected = NULL, multiple = FALSE),
+                        shinyjs::hidden(
+                          div(id = "targets",
+                              selectizeInput("tar_type", "What target type do you want to use?", 
+                                             choices = c("Relative target" = "rel_tar",
+                                                         "Absolute target" = "abs_tar",
+                                                         "Loglinear target" = "log_tar"),
+                                             selected = NULL, multiple = FALSE),
+                              radioButtons('glob_tar', 'Use one target for all?',
+                                           c("Yes, global Target" = 'global',
+                                             "No, individual Targets" = 'ind_tar'),'global'),
+                              shinyjs::hidden(
+                                numericInput("tar_all", "Set the global target", value = 0)
+                                )
+                              )
+                          ),
+                        shinyjs::hidden(
+                          numericInput("budget", "Set the budget", value = 0)
+                        ),
+                        shinyjs::hidden(
+                          textAreaInput("phylo", "Add Maximum Phylogenetic Representation Objective", value = "Not sure what we need here")
+                        )
+                        
+               ),
+            
+            ## CONSTRAINTS
+            tabPanel("Constraints", "Tab content Constraints"),
+            
+            ## PENALTIES
+            tabPanel("Penalties", 
+                        p("A penalty can be applied to a conservation planning 
                         problem to penalize solutions according to a specific metric. 
                         Penalties---unlike constraints---act as an explicit trade-off with the 
                         objective being minimized or maximized (e.g. total solution cost given 
