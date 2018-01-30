@@ -17,6 +17,7 @@ body <-  dashboardBody(
                br(),
                fileInput('x', 'x',multiple=TRUE),
                fileInput('features', 'features',multiple=TRUE),
+          #drop-down based on x type to selct cost column
                fileInput('rij', 'rij (optional)',multiple=TRUE),
                fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
@@ -25,7 +26,6 @@ body <-  dashboardBody(
                
 
                ),
-             tabPanel("Problem", ""),
              tabPanel("Objective", "Tab content Objective"),
              tabPanel("Constraints", "Tab content Constraints"),
              tabPanel("Penalties", "Tab content Penalties")
