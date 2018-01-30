@@ -176,8 +176,9 @@ function(input, output, session) {
     
     #req(input$x)
     pp <- prob()
+    ss <- solve()
     
-    print(pp)
+    print(ss)
     
   })
   
