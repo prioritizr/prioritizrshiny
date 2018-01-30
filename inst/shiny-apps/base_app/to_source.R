@@ -28,4 +28,21 @@ about_panel <- tabPanel("About",
                             <a href="http://gurobi.com">Gurobi:</a> Install the <a href="http://www.gurobi.com/products/modeling-languages/r"><em>gurobi</em> <em>R</em> package</a> to use this solver.</li>
                             <li>
                             <a href="https://projects.coin-or.org/SYMPHONY">SYMPHONY:</a> Install either the <a href="https://CRAN.R-project.org/package=Rsymphony"><em>Rsymphony</em></a> or <a href="https://bioconductor.riken.jp/packages/3.3/bioc/html/lpsymphony.html"><em>lpsymphony</em></a> <em>R</em> packages to use this solver.</li>
-                            </ul>')))
+                            </ul>
+                            <p>To cite package <em>prioritizr</em> in publications please use:</p>
+                            <pre><code>Hanson JO, Schuster R, Morrell N, Strimas-Mackey M, Watts ME, Arcese P, Bennett J, Possingham HP (2017). prioritizr: Systematic Conservation Prioritization in R. R package version 3.0.3.3. https://github.com/prioritizr/prioritizr.</code></pre>
+                            <p>Additionally, we keep a <a href="https://prioritizr.github.io/prioritizr/articles/publication_record.html">record of publications</a> that use <em>prioritizr</em>, so please <a href="https://github.com/prioritizr/prioritizr/issues/new">file an issue on GitHub</a> so we can add it to the list.</p>')
+                                 ),
+                        
+                        #a("Key assumptions", class = "btn btn-primary btn-md", href="Key-Assumptions.pdf", target="_blank"),
+                        #a("Technical information", class = "btn btn-primary btn-md", href="Technical Information.pdf", target="_blank"),
+                        a("Contact us", class = "btn btn-primary btn-md", href="mailto:mail@richard-schuster.com?Subject=prioritizrshiny"),
+                        br()#,
+                        #br(),
+                        #tags$a(href="https://www.sfu.ca/", target="_blank", tags$img(src='sfulogo.jpg')),
+                        #tags$a(href="http://www.wilburforce.org/", target="_blank", tags$img(src='sop1.png'))
+                        )
+
+howto_panel <- tabPanel("Instructions", 
+                        h4("How to use this tool?"),
+                        p("This "))

@@ -36,7 +36,7 @@ body <-  dashboardBody(
              #title = "Oyt",
              id = "tabset2", width = NULL,height = "600px", 
              about_panel,
-                      
+             howto_panel,
              tabPanel("Problem", 
                       leafletOutput("mymap")#,height=600)
            )
