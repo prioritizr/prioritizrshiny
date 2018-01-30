@@ -68,18 +68,19 @@ body <-  dashboardBody(
                       shinyjs::hidden(
                         div(id = "pen_bound",
                             numericInput("penalty", "Penalty", 0),
-                            textInput("edge_factor", "Edge factor", 0)
+                            numericInput("edge_factor", "Edge factor", 0),
+                            fileInput('boundary_data', 'Boundary data (optional)',multiple=TRUE)
                             )
                       ),
                       
                       shinyjs::hidden(
                         div(id = "pen_conn",
-                            numericInput("age", "Age", 30),
-                            textInput("company", "Company", "")
+                            numericInput("penalty", "Penalty", 0),
+                            fileInput('connectivity_data', 'Connectivity data',multiple=TRUE)
                         )
                       )
 
-                      ),
+                      )
 
                       
            )
