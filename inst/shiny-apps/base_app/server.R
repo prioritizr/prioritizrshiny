@@ -27,6 +27,14 @@ function(input, output, session) {
   })
 
   
+  observe({
+    if (class(pu()) == "SpatialPolygonsDataFrame") {
+      shinyjs::show("columns")
+    } else {
+      shinyjs::hide("columns")
+    }
+  })
+  
   output$contents <- renderTable({
     
     # input$file1 will be NULL initially. After the user selects

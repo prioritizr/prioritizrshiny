@@ -5,6 +5,7 @@ header <- dashboardHeader(
 )
 
 body <-  dashboardBody(
+  useShinyjs(),
   fluidRow(
     column(width = 5,
            tabBox(
@@ -17,12 +18,12 @@ body <-  dashboardBody(
                br(),
                fileInput('x', 'x',multiple=TRUE),
                #Single Species selection
-               selectInput("columns", "Select Columns", choices = NULL), # no choices before uploading 
-               #conditionalPanel(condition = "class(output.pu) == 'SpatialPolygonsDataFrame'",
-              #                  selectizeInput("columns", "Select Columns", choices = NULL, # no choices before uploading 
-              #                                 selected = NULL, multiple = FALSE,
-              #                                 options = list(placeholder = 'select a single species'))
-              # ),
+               #selectInput("columns", "Select Columns", choices = NULL), # no choices before uploading 
+               shinyjs::hidden(
+                selectizeInput("columns", "Select Columns", choices = NULL, # no choices before uploading 
+                               selected = NULL, multiple = FALSE,
+                               options = list(placeholder = 'select a single species'))
+                ),
                fileInput('features', 'features',multiple=TRUE),
           #drop-down based on x type to optionally selct cost column
                
