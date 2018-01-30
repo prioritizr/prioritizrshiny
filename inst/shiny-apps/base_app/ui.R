@@ -17,7 +17,6 @@ body <-  dashboardBody(
                br(),
                fileInput('x', 'x',multiple=TRUE),
                #Single Species selection
-               actionButton("choice", "incorporate external information"),
                selectInput("columns", "Select Columns", choices = NULL), # no choices before uploading 
                #conditionalPanel(condition = "class(output.pu) == 'SpatialPolygonsDataFrame'",
               #                  selectizeInput("columns", "Select Columns", choices = NULL, # no choices before uploading 
@@ -47,8 +46,9 @@ body <-  dashboardBody(
              id = "tabset2", width = NULL,height = "600px", 
              about_panel,
              howto_panel,
-             tabPanel("Problem", 
-                      leafletOutput("mymap")#,height=600)
+             tabPanel("Problem",
+                      tableOutput("contents")
+                      #leafletOutput("mymap")#,height=600)
            )
     ))
     

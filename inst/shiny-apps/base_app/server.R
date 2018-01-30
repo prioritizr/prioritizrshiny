@@ -1,64 +1,44 @@
 function(input, output, session) {
   
   
-  info <- eventReactive(input$choice, {
-    inFile <- input$file
-    # Instead # if (is.null(inFile)) ... use "req"
-    req(inFile)
+  pu <- reactive({
+    shpDF <- input$x
     
-    # Changes in read.table 
-    f <- read.table(inFile$datapath, header = input$header, sep = input$sep, quote = input$quote)
-    vars <- names(f)
-    # Update select input immediately after clicking on the action button. 
-    updateSelectInput(session, "columns","Select Columns", choices = vars)
-    
-    f
-  })
-  pu <- eventReactive(input$choice, {
-    input$x
+    req(shpDF)
 
-    if (is.null(input$x)) {
-      pu <- NULL
-    } else {
-      shpDF <- input$x
-      prevWD <- getwd()
-      uploadDirectory <- dirname(shpDF$datapath[1])
-      setwd(uploadDirectory)
-      for (i in 1:nrow(shpDF)){
-        file.rename(shpDF$datapath[i], shpDF$name[i])
-      }
-      shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
-      shpPath <- paste(uploadDirectory)#, shpName, sep="/")
-      setwd(prevWD)
-      pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE)
-      vars <- names(pu)
-      #selectizeInput("singlespp", "Select single speices from the List", 
-      #               choices = names(output.pu),
-                     
-      updateSelectInput(session, "columns","Select Columns", choices = vars)
+    #shpDF <- input$x
+    prevWD <- getwd()
+    uploadDirectory <- dirname(shpDF$datapath[1])
+    setwd(uploadDirectory)
+    for (i in 1:nrow(shpDF)){
+      file.rename(shpDF$datapath[i], shpDF$name[i])
     }
-    
+    shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
+    shpPath <- paste(uploadDirectory)#, shpName, sep="/")
+    setwd(prevWD)
+    pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE)
+    vars <- names(pu)
+    #selectizeInput("singlespp", "Select single speices from the List", 
+    #               choices = names(output.pu),
+                   
+    updateSelectInput(session, "columns","Select Columns", choices = vars)
+
     return (pu)
   })
+
   
-  # Combine the selected variables into a new data frame
-  selectedData <- reactive({
-    iris[, c(input$xcol, input$ycol)]
-  })
-  
-  clusters <- reactive({
-    kmeans(selectedData(), input$clusters)
-  })
-  
-  output$plot1 <- renderPlot({
-    palette(c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3",
-              "#FF7F00", "#FFFF33", "#A65628", "#F781BF", "#999999"))
+  output$contents <- renderTable({
     
-    par(mar = c(5.1, 4.1, 0, 1))
-    plot(selectedData(),
-         col = clusters()$cluster,
-         pch = 20, cex = 3)
-    points(clusters()$centers, pch = 4, cex = 4, lwd = 4)
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+    
+    req(input$x)
+    
+    out <- pu()@data
+    
+    
+    
+      return(out)
   })
-  
 }
