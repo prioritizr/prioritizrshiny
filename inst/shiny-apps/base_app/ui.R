@@ -11,8 +11,8 @@ body <-  dashboardBody(
              title = "Inputs",
              # The id lets us use input$tabset1 on the server to find the current tab
              id = "tabset1", width = NULL,height = "600px", 
-             tabPanel("Problem", 
-               h4("Create a conservation problem"),
+             tabPanel("Data", 
+               h4("Upload your data"),
                p("By specifying the inputs below you can supply data to generate the problem"),
                br(),
                fileInput('x', 'x',multiple=TRUE),
@@ -25,6 +25,7 @@ body <-  dashboardBody(
                
 
                ),
+             tabPanel("Problem", ""),
              tabPanel("Objective", "Tab content Objective"),
              tabPanel("Constraints", "Tab content Constraints"),
              tabPanel("Penalties", "Tab content Penalties")
