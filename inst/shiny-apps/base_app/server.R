@@ -1,3 +1,5 @@
+base::options(shiny.maxRequestSize=10000*1024^2)
+
 function(input, output, session) {
   
   
@@ -16,7 +18,7 @@ function(input, output, session) {
     shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
     shpPath <- paste(uploadDirectory)#, shpName, sep="/")
     setwd(prevWD)
-    pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE)
+    pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),

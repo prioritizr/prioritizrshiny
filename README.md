@@ -22,5 +22,5 @@ library(prioritizrshiny)
 prshiny()
 
 #run base Shiny app
-prshiny("base_app")
+prshiny("base_app", launch.browser = TRUE)
 ```
