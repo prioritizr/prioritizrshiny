@@ -33,10 +33,29 @@ body <-  dashboardBody(
     ),
     column(width = 7,
            tabBox(
-             title = "Oyt",
+             #title = "Oyt",
              id = "tabset2", width = NULL,height = "600px", 
+             tabPanel("About the tool", 
+                      h4("Systematic conservation prioritization in R"),
+                      p("Prioritizr is an R package for solving systematic conservation prioritization problems 
+                        using integer linear programming (ILP) techniques. The package offers a flexible interface 
+                        for creating conservation problems using a range of different objectives and constraints that 
+                        can be tailored to the specific needs of the conservation planner. Conservation problems can 
+                        be solved using a variety of commercial and open-source exact algorithm solvers. In contrast 
+                        to the algorithms conventionally used to solve conservation problems, such as greedy heuristics 
+                        or simulated annealing, the exact algorithms used by prioritizr are guaranteed to find optimal 
+                        solutions. This package also has the functionality to read Marxan input data and find much 
+                        cheaper solutions in a much shorter period of time than Marxan (Beyer et al. 2016). Check out the 
+                        prioritizrshiny R package to interactively build and customize conservation planning problems."),
+                      h4("Disclaimer"),
+                      p("The web tool and its scientific framework has been created over the past 4-years based on 
+                        input and feedback from >100 interested groups and parties engaged in the development of 
+                        Run-of-River hydropower in British Columbia. The tool represents an evidence-based framework 
+                        that aims for a value-neutral presentation of the issues, and the project team has prioritized 
+                        transparency and the inclusion of diverse perspectives.")),
+                      
              tabPanel("Problem", 
-               leafletOutput("mymap")#,height=600)
+                      leafletOutput("mymap")#,height=600)
            )
     ))
     
