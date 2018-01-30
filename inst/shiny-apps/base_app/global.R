@@ -1,4 +1,4 @@
-library(prioritizr)
+library(prioritizrshiny)
 library(rgdal)
 library(shinyjs)
 

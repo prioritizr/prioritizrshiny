@@ -5,7 +5,7 @@ function(input, output, session) {
     shpDF <- input$x
     
     req(shpDF)
-
+    
     #shpDF <- input$x
     prevWD <- getwd()
     uploadDirectory <- dirname(shpDF$datapath[1])
@@ -20,75 +20,86 @@ function(input, output, session) {
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),
-                   
+    
     updateSelectInput(session, "cost_col", choices = vars)
     updateSelectInput(session, "feat_col", choices = vars)
     
     return (pu)
   })
   
-
+  
   prob <- eventReactive(input$Bproblem, {
     pu <- pu()
     
-    p <- problem(pu, features = input$feat_col, cost_column = input$cost_col)
+    p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
     
     return(p)
   })
   
-  solve <- eventReactive(input$Bsolve, {
+  solve <- reactive({ 
+    # Don't do anything until after the first button push.
+    input$Bsolve
+    # Note that just by virtue of checking the value of input$recalcButton,
+    # we're now going to get called whenever it is pushed.    
+    if(input$Bsolve == 0)
+      return(NULL)    
     
-    p <- prob() 
-    
-    #add objective  
-    if (input$objective == "min_set"){
-      p <- p %>% add_min_set_objective()
+    return(isolate({
       
-    } else if (input$objective == "max_cov"){
-      p <- p %>% add_max_cover_objective(input$budget)
+      p <- prob()
       
-    } else if (input$objective == "max_feat"){
-      p <- p %>% add_max_features_objective(input$budget)
-      
-    } else if (input$objective == "max_phylo"){
-      p <- p %>% add_max_phylo_objective(input$budget, input$phylo)
-      
-    } else if (input$objective == "max_util"){
-      p <- p %>% add_max_utility_objective(input$budget)
-
-    } else{
+      #add objective  
+      if (input$objective == "min_set"){
+        p <- p %>% add_min_set_objective()
+        
+      } else if (input$objective == "max_cov"){
+        p <- p %>% add_max_cover_objective(input$budget)
+        
+      } else if (input$objective == "max_feat"){
+        p <- p %>% add_max_features_objective(input$budget)
+        
+      } else if (input$objective == "max_phylo"){
+        p <- p %>% add_max_phylo_objective(input$budget, input$phylo)
+        
+      } else if (input$objective == "max_util"){
+        p <- p %>% add_max_utility_objective(input$budget)
+        
+      } #else{
       #Throw error or show warning
-    }
-    
-    
-    #add targets
-    if (input$objective %in% c("min_set", "max_feat", "max_phylo")){
+      #}
       
-      if(input$glob_tar == "global"){
-        tmp_tar <- input$tar_all
-      } else {
-        tmp_tar <- 1 #get target values from rhandsontable
+      
+      #add targets
+      if (input$objective %in% c("min_set", "max_feat", "max_phylo")){
+        
+        if(input$glob_tar == "global"){
+          tmp_tar <- input$tar_all
+        } else {
+          tmp_tar <- 1 #get target values from rhandsontable
+        }
+        
+        if(input$tar_type == "rel_tar"){
+          p <- p %>% add_relative_targets(tmp_tar)
+          
+        } else if(input$tar_type == "abs_tar"){
+          p <- p %>% add_relative_targets(tmp_tar)
+          
+        } else if(input$tar_type == "log_tar"){
+          p <- p %>% add_loglinear_targets(tmp_tar)
+          
+        }
       }
       
-      if(input$tar_type == "rel_tar"){
-        p <- p %>% add_relative_targets(tmp_tar)
-        
-      } else if(input$tar_type == "abs_tar"){
-        p <- p %>% add_relative_targets(tmp_tar)
-        
-      } else if(input$tar_type == "log_tar"){
-        p <- p %>% add_loglinear_targets(tmp_tar)
-        
-      }
-    }
-    
-    s <- solve(p)
-    
-    return(s)
+      
+      s <- prioritizr::solve(p)
+      
+      return(s)
+    }))
     
   })
-
   
+  observe ({  solve()
+  }) 
   #################################################################################################################
   #shinyjs checks
   #################################################################################################################
@@ -99,7 +110,7 @@ function(input, output, session) {
       shinyjs::hide("cost_col")
     }
   })
-
+  
   observe({
     if (class(pu()) == "SpatialPolygonsDataFrame") {
       shinyjs::show("feat_col")
@@ -140,7 +151,7 @@ function(input, output, session) {
     }
   })
   
-
+  
   observe({
     if (input$penalty == "bound") {
       shinyjs::show("pen_bound")
@@ -156,7 +167,7 @@ function(input, output, session) {
       shinyjs::hide("pen_conn")
     }
   })
-
+  
   observe({
     if (input$Bproblem) {
       shinyjs::show("to_solve")
