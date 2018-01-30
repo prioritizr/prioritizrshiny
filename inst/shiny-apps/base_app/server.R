@@ -64,7 +64,7 @@ function(input, output, session) {
   })
   
   observe({
-    if (input$objective == "min_set") {
+    if (input$objective %in% c("min_set", "max_feat", "max_phylo")) {
       shinyjs::show("targets")
     } else {
       shinyjs::hide("targets")
@@ -96,6 +96,14 @@ function(input, output, session) {
     }
   })
 
+  observe({
+    if (input$Bproblem) {
+      shinyjs::show("to_solve")
+    } else {
+      shinyjs::hide("to_solve")
+    }
+  })
+  
   
   
   

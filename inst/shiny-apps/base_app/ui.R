@@ -48,19 +48,19 @@ body <-  dashboardBody(
                                                    "Maximum features" = "max_feat",
                                                    "Maximum phylogeny" = "max_phylo",
                                                    "Maximum untility" = "max_util"),
-                                       selected = NULL, multiple = FALSE),
+                                       selected = 'min_set', multiple = FALSE),
                         shinyjs::hidden(
                           div(id = "targets",
                               selectizeInput("tar_type", "What target type do you want to use?", 
                                              choices = c("Relative target" = "rel_tar",
                                                          "Absolute target" = "abs_tar",
                                                          "Loglinear target" = "log_tar"),
-                                             selected = NULL, multiple = FALSE),
+                                             selected = 'rel_tar', multiple = FALSE),
                               radioButtons('glob_tar', 'Use one target for all?',
                                            c("Yes, global Target" = 'global',
                                              "No, individual Targets" = 'ind_tar'),'global'),
                               shinyjs::hidden(
-                                numericInput("tar_all", "Set the global target", value = 0)
+                                numericInput("tar_all", "Set the global target", value = 0.1)
                                 )
                               )
                           ),
@@ -129,8 +129,12 @@ body <-  dashboardBody(
       title = tagList(shiny::icon("gear"), "Setup and solve the problem"),
       actionButton("Bproblem","Create the prioritizr problem"),
       tags$hr(),
-      p("If you are happy with your specification, go ahead and solve your conservation problem."),
-      actionButton("Bsolve","Solve the prioritizr problem")
+      shinyjs::hidden(
+        div(id = "to_solve",
+          p("If you are happy with your specification, go ahead and solve your conservation problem."),
+          actionButton("Bsolve","Solve the prioritizr problem")
+        )
+      )
       
     ))
   )
