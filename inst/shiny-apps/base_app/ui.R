@@ -114,8 +114,18 @@ body <-  dashboardBody(
              id = "tabset2", width = NULL,height = "600px", 
              about_panel,
              howto_panel,
-             tabPanel("Problem",
-                      tableOutput("contents")
+             tabPanel("Outputs",
+                      box(
+                        #                    solidHeader = TRUE,status = "primary",
+                        leafletOutput("mymap", height=400),
+                        width = NULL,
+                        collapsible = FALSE),#,collapsed=TRUE),
+                      box(
+                        solidHeader = FALSE,#,status = "primary",
+                        #background = "light-blue",
+                        tableOutput("contents"),
+                        width = NULL)
+                      
                       #leafletOutput("mymap")#,height=600)
            )
     ))

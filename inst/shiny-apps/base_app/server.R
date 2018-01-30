@@ -186,10 +186,10 @@ function(input, output, session) {
   output$contents <- renderPrint({
     
     #req(input$x)
-    pp <- prob()
+    #pp <- prob()
     ss <- solve()
     
-    print(ss)
+    ss
     
   })
   
