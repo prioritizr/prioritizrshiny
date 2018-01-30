@@ -21,32 +21,34 @@ function(input, output, session) {
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),
                    
-    updateSelectInput(session, "columns","Select Columns", choices = vars)
-
+    updateSelectInput(session, "cost_col", choices = vars)
+    updateSelectInput(session, "feat_col", choices = vars)
+    
     return (pu)
   })
 
   
   observe({
     if (class(pu()) == "SpatialPolygonsDataFrame") {
-      shinyjs::show("columns")
+      shinyjs::show("cost_col")
     } else {
-      shinyjs::hide("columns")
+      shinyjs::hide("cost_col")
+    }
+  })
+
+  observe({
+    if (class(pu()) == "SpatialPolygonsDataFrame") {
+      shinyjs::show("feat_col")
+    } else {
+      shinyjs::hide("feat_col")
     }
   })
   
+  
   output$contents <- renderTable({
     
-    # input$file1 will be NULL initially. After the user selects
-    # and uploads a file, head of that data file by default,
-    # or all rows if selected, will be shown.
-    
     req(input$x)
-    
     out <- pu()@data
-    
-    
-    
-      return(out)
+    return(out)
   })
 }

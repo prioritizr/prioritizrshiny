@@ -17,18 +17,21 @@ body <-  dashboardBody(
                p("By specifying the inputs below you can supply data to generate the problem"),
                br(),
                fileInput('x', 'x',multiple=TRUE),
-               #Single Species selection
-               #selectInput("columns", "Select Columns", choices = NULL), # no choices before uploading 
                shinyjs::hidden(
-                selectizeInput("columns", "Select Columns", choices = NULL, # no choices before uploading 
-                               selected = NULL, multiple = FALSE,
-                               options = list(placeholder = 'select a single species'))
+                 selectizeInput("cost_col", "Select cost column", choices = NULL, # no choices before uploading 
+                               selected = NULL, multiple = FALSE)
                 ),
-               fileInput('features', 'features',multiple=TRUE),
+               
+               shinyjs::hidden(
+                 selectizeInput("feat_col", "Select colum names of features", choices = NULL, # no choices before uploading 
+                                selected = NULL, multiple = TRUE)
+               ),
+               
+               #fileInput('features', 'features',multiple=TRUE),
           #drop-down based on x type to optionally selct cost column
                
-               fileInput('rij', 'rij (optional)',multiple=TRUE),
-               fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
+               #fileInput('rij', 'rij (optional)',multiple=TRUE),
+               #fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
                tags$hr(),
                actionButton("mrun","Create the prioritizr problem")
