@@ -17,14 +17,16 @@ body <-  dashboardBody(
                br(),
                fileInput('x', 'x',multiple=TRUE),
                #Single Species selection
-               conditionalPanel(condition = "input.ecologicalV == 'singlespp'",
-                                selectizeInput("singlespp", "Select single speices from the List", 
-                                               choices = s.spp,
-                                               selected = NULL, multiple = FALSE,
-                                               options = list(placeholder = 'select a single species'))
-               ),
+               actionButton("choice", "incorporate external information"),
+               selectInput("columns", "Select Columns", choices = NULL), # no choices before uploading 
+               #conditionalPanel(condition = "class(output.pu) == 'SpatialPolygonsDataFrame'",
+              #                  selectizeInput("columns", "Select Columns", choices = NULL, # no choices before uploading 
+              #                                 selected = NULL, multiple = FALSE,
+              #                                 options = list(placeholder = 'select a single species'))
+              # ),
                fileInput('features', 'features',multiple=TRUE),
           #drop-down based on x type to optionally selct cost column
+               
                fileInput('rij', 'rij (optional)',multiple=TRUE),
                fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                

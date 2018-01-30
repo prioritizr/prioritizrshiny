@@ -1,7 +1,20 @@
 function(input, output, session) {
   
   
-  pu <- reactive ({
+  info <- eventReactive(input$choice, {
+    inFile <- input$file
+    # Instead # if (is.null(inFile)) ... use "req"
+    req(inFile)
+    
+    # Changes in read.table 
+    f <- read.table(inFile$datapath, header = input$header, sep = input$sep, quote = input$quote)
+    vars <- names(f)
+    # Update select input immediately after clicking on the action button. 
+    updateSelectInput(session, "columns","Select Columns", choices = vars)
+    
+    f
+  })
+  pu <- eventReactive(input$choice, {
     input$x
 
     if (is.null(input$x)) {
@@ -18,6 +31,11 @@ function(input, output, session) {
       shpPath <- paste(uploadDirectory)#, shpName, sep="/")
       setwd(prevWD)
       pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE)
+      vars <- names(pu)
+      #selectizeInput("singlespp", "Select single speices from the List", 
+      #               choices = names(output.pu),
+                     
+      updateSelectInput(session, "columns","Select Columns", choices = vars)
     }
     
     return (pu)
