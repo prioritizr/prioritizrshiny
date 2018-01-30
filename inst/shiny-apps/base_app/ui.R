@@ -33,8 +33,8 @@ body <-  dashboardBody(
                #fileInput('rij', 'rij (optional)',multiple=TRUE),
                #fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
-               tags$hr(),
-               actionButton("mrun","Create the prioritizr problem")
+               tags$hr()
+               
                
 
                ),
@@ -62,9 +62,11 @@ body <-  dashboardBody(
     column(width = 5,
     box(width = NULL, solidHeader = TRUE,
       # Title can include an icon
-      title = tagList(shiny::icon("gear"), "Solve the problem"),
+      title = tagList(shiny::icon("gear"), "Setup and solve the problem"),
+      actionButton("mcreate","Create the prioritizr problem"),
+      tags$hr(),
       p("If you are happy with your specification, go ahead and solve your conservation problem."),
-      actionButton("mrun","Solve teh prioritizr problem")
+      actionButton("mrun","Solve the prioritizr problem")
       
     ))
   )
