@@ -36,7 +36,7 @@ function(input, output, session) {
     return(p)
   })
   
-  solve <- reactive({ 
+  solv <- reactive({ 
     # Don't do anything until after the first button push.
     input$Bsolve
     # Note that just by virtue of checking the value of input$recalcButton,
@@ -98,7 +98,7 @@ function(input, output, session) {
     
   })
   
-  observe ({  solve()
+  observe ({  solv()
   }) 
   #################################################################################################################
   #shinyjs checks
@@ -187,7 +187,7 @@ function(input, output, session) {
     
     #req(input$x)
     #pp <- prob()
-    ss <- solve()
+    ss <- solv()
     
     ss
     
@@ -199,10 +199,10 @@ function(input, output, session) {
   
   output$mymap <- renderLeaflet({
     
-    sol <- solve()
+    sol <- solv()
     sol$solution_1 <- factor(sol$solution_1)
-    spplot(sol, "solution_1", col.regions = c('grey90', 'darkgreen'),
-           main = "Solution", xlim = c(-0.1, 1.1), ylim = c(-0.1, 1.1))
+    
+    pal.sol <- colorFactor("YlOrRd", sol$solution_1)
     
     leaflet(sol) %>% addTiles() %>%
       # Base groups
@@ -210,15 +210,15 @@ function(input, output, session) {
       addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
       addProviderTiles("Stamen.Terrain", group = "Terrain") %>%
       addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5, group = "solution",
-                  opacity = 1.0, fillOpacity = 0.5,
-                  fillColor = ~colorFactor("YlOrRd", solution_1)(solution_1),
+                  opacity = 1.0, fillOpacity = 1,
+                  fillColor = colorFactor("YlOrRd", sol$solution_1)(sol$solution_1),
                   highlightOptions = highlightOptions(color = "white", weight = 2,
-                                                      bringToFront = TRUE))
+                                                      bringToFront = TRUE)) %>%
       addScaleBar(position = "topleft") %>%
       addLayersControl(baseGroups = c("StreetMap", "Aerial", "Terrain"),
                        overlayGroups = c("solution"),
                        options = layersControlOptions(collapsed = FALSE)) %>%
-      addLegend(pal = ~colorFactor("YlOrRd", solution_1)(solution_1), values = solution_1, 
+      addLegend(pal = pal.sol, values = sol$solution_1, 
                position = "topright",title = "Solution", group = "solution") 
   })
   
