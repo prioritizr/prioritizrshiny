@@ -1,5 +1,28 @@
 function(input, output, session) {
   
+  
+  pu <- reactive ({
+    input$x
+
+    if (is.null(input$x)) {
+      pu <- NULL
+    } else {
+      shpDF <- input$x
+      prevWD <- getwd()
+      uploadDirectory <- dirname(shpDF$datapath[1])
+      setwd(uploadDirectory)
+      for (i in 1:nrow(shpDF)){
+        file.rename(shpDF$datapath[i], shpDF$name[i])
+      }
+      shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
+      shpPath <- paste(uploadDirectory)#, shpName, sep="/")
+      setwd(prevWD)
+      pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE)
+    }
+    
+    return (pu)
+  })
+  
   # Combine the selected variables into a new data frame
   selectedData <- reactive({
     iris[, c(input$xcol, input$ycol)]

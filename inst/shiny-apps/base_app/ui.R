@@ -16,8 +16,15 @@ body <-  dashboardBody(
                p("By specifying the inputs below you can supply data to generate the problem"),
                br(),
                fileInput('x', 'x',multiple=TRUE),
+               #Single Species selection
+               conditionalPanel(condition = "input.ecologicalV == 'singlespp'",
+                                selectizeInput("singlespp", "Select single speices from the List", 
+                                               choices = s.spp,
+                                               selected = NULL, multiple = FALSE,
+                                               options = list(placeholder = 'select a single species'))
+               ),
                fileInput('features', 'features',multiple=TRUE),
-          #drop-down based on x type to selct cost column
+          #drop-down based on x type to optionally selct cost column
                fileInput('rij', 'rij (optional)',multiple=TRUE),
                fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
