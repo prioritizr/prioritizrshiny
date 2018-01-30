@@ -33,12 +33,26 @@ body <-  dashboardBody(
                #fileInput('rij', 'rij (optional)',multiple=TRUE),
                #fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
-               tags$hr()
-               
-               
-
+               tags$hr(),
+          
+              "Once"  
                ),
-             tabPanel("Objective", "Tab content Objective"),
+             tabPanel("Objective",
+                      selectizeInput("objective", "What objective function do you want to use?", 
+                                     choices = c("Minimum set" = "min_set",
+                                                 "Maximum cover" = "max_cov",
+                                                 "Maximum features" = "max_feat",
+                                                 "Maximum phylogeny" = "max_phylo",
+                                                 "Maximum untility" = "max_util"),
+                                     selected = NULL, multiple = FALSE),
+                      shinyjs::hidden(
+                        numericInput("budget", "Set the budget", value = 0)
+                      ),
+                      shinyjs::hidden(
+                        textAreaInput("phylo", "Add Maximum Phylogenetic Representation Objective", value = "Not sure what we need here")
+                      )
+                      
+             ),
              tabPanel("Constraints", "Tab content Constraints"),
              tabPanel("Penalties", "Tab content Penalties")
              
@@ -63,10 +77,10 @@ body <-  dashboardBody(
     box(width = NULL, solidHeader = TRUE,
       # Title can include an icon
       title = tagList(shiny::icon("gear"), "Setup and solve the problem"),
-      actionButton("mcreate","Create the prioritizr problem"),
+      actionButton("Bproblem","Create the prioritizr problem"),
       tags$hr(),
       p("If you are happy with your specification, go ahead and solve your conservation problem."),
-      actionButton("mrun","Solve the prioritizr problem")
+      actionButton("Bsolve","Solve the prioritizr problem")
       
     ))
   )

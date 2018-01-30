@@ -28,6 +28,9 @@ function(input, output, session) {
   })
 
   
+  #################################################################################################################
+  #shinyjs checks
+  #################################################################################################################
   observe({
     if (class(pu()) == "SpatialPolygonsDataFrame") {
       shinyjs::show("cost_col")
@@ -44,6 +47,23 @@ function(input, output, session) {
     }
   })
   
+  observe({
+    if (input$objective != "min_set") {
+      shinyjs::show("budget")
+    } else {
+      shinyjs::hide("budget")
+    }
+  })
+  
+  observe({
+    if (input$objective == "max_phylo") {
+      shinyjs::show("phylo")
+    } else {
+      shinyjs::hide("phylo")
+    }
+  })
+  
+  
   
   output$contents <- renderTable({
     
@@ -51,4 +71,10 @@ function(input, output, session) {
     out <- pu()@data
     return(out)
   })
+  
+  #################################################################################################################
+  #End shinyjs checks
+  #################################################################################################################
+  
+  
 }
