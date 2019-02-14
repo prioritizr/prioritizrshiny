@@ -13,21 +13,22 @@ NULL
 #'
 #' @return Starts a Shiny app wrapper for prioritzr functions.
 #'
-#' @seealso \code{\link{problem}},  \code{\link{objectives}}, \code{\link{targets}}.
+#' @seealso \code{\link{prshiny_apps}}.
 #'
 #' @examples
 #' # list available shiny apps
-#' prshiny()
+#' prshiny_apps()
 #'
 #' # run the basic app
-#' prshiny("base_app")
+#' # Not run
+#' #prshiny("base_app")
 #'
-#' @aliases prioritizrshiny
 #'
 #' @name prshiny
 #' @docType methods
 NULL
 
+#' @export
 prshiny <- function(app, ...) {
   # locate all the shiny apps that exist
   validapps <- list.files(system.file("shiny-apps", package = "prioritizrshiny"))

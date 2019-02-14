@@ -24,20 +24,21 @@ Description: Conservation prioritization using integer
     should install the 'gurobi' optimizer
     (available from <http://www.gurobi.com/>).
 Imports:
-    rgeos
-Suggests:
-    rhandsontable    
-Depends:
-    R(>= 3.3.2),
+    leaflet,
+    rgeos,
+    knitr,
     raster,
     sp,
+    rhandsontable,
+    rgdal,
+    shinyjs,
     shiny,
     shinydashboard,
-    leaflet,
-    prioritizr,
-    rgdal,
-    shinyjs
-LinkingTo: Rcpp, RcppArmadillo, BH
+    prioritizr
+Suggests: 
+    testthat
+Depends:
+    R(>= 3.3.0),
 License: GPL-3
 LazyData: true
 SystemRequirements: C++11
@@ -45,3 +46,4 @@ URL: https://github.com/prioritizr/prioritizrshiny
 BugReports: https://github.com/prioritizr/prioritizrshiny/issues
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
+Encoding: UTF-8
