@@ -5,6 +5,8 @@ prioritizrshiny
 
 The goal of prioritizrshiny is to ...
 
+[![lifecycle](https://img.shields.io/badge/Lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis Build Status](https://img.shields.io/travis/prioritizr/prioritizrshiny/master.svg?label=Linux%20%26%20Mac%20OSX)](https://travis-ci.org/prioritizr/prioritizrshiny)
+
 Installation
 ------------
 
