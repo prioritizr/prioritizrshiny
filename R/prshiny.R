@@ -49,5 +49,5 @@ prshiny <- function(app, ...) {
 
   # find and launch the app
   appDir <- system.file("shiny-apps", app, package = "prioritizrshiny")
-  shiny::runApp(appDir, display.mode = "normal", ...)
+  shiny::runApp(appDir, display.mode = "normal", launch.browser = TRUE, ...)
 }

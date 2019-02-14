@@ -4,7 +4,7 @@
 \name{prshiny}
 \alias{prshiny}
 \alias{prioritizrshiny}
-\title{Run one of the Shiy apps for prioritizrshiny}
+\title{Run one of the Shiy apps for prioritizr}
 \arguments{
 \item{x}{string for the app directory object.}
 
@@ -14,16 +14,10 @@
 Starts a Shiny app wrapper for prioritzr functions.
 }
 \description{
-Set targets expressed as the actual value of features in the study area 
-that need to be represented in the prioritization. The argument to 
-\code{x} is treated the same as for \code{\link{add_relative_targets}}.
+Description of the prshiny function.
 }
 \details{
-Targets are used to specify the minimum amount or proportion of a feature's
-distribution that needs to be protected. All conservation planning problems require 
-adding targets with the exception of the maximum cover problem 
-(see \code{\link{add_max_cover_objective}}), which maximizes all features 
-in the solution and therefore does not require targets.
+Need to provide details for the function.
 }
 \examples{
 # list available shiny apps
@@ -34,5 +28,5 @@ prshiny("base_app")
 
 }
 \seealso{
-\code{\link{problem}},  \code{\link{add_relative_targets}}, \code{\link{add_loglinear_targets}}.
+\code{\link{problem}},  \code{\link{objectives}}, \code{\link{targets}}.
 }
