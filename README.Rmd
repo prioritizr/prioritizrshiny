@@ -1,39 +1,48 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-prioritizrshiny
-===============
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# prioritizrshiny
 
 The goal of prioritizrshiny is to ...
 
-Installation
-------------
+## Installation
 
-The latest official version of the *prioritizrshiny R* package can be installed using the following *R* code.
+The latest official version of the _prioritizrshiny R_ package can be installed using the following _R_ code.
 
-``` r
+```{r, eval = FALSE}
 #install.packages("prioritizrshiny", repos = "https://cran.rstudio.com/")
 ```
 
 Alternatively, the latest development version can be installed using the following code. Please note that while developmental versions may contain additional features not present in the official version, they may also contain coding errors.
 
-``` r
+```{r, eval = FALSE}
 #if (!require(devtools))
 #  install.packages("devtools")
 #devtools::install_github("prioritizr/prioritizrshiny")
 ```
 
-Example
--------
+## Example
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```{r example}
 library(prioritizrshiny)
 
 # list available shiny apps
 prshiny_apps()
-#> [1] "Valid apps are: 'base_app'"
 
 # run the basic app
 #prshiny("base_app")
+
 ```
