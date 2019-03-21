@@ -1,14 +1,14 @@
 
-header <- dashboardHeader(
+header <- shinydashboard::dashboardHeader(
   
   title = "prioritzrshiny"
 )
 
-body <-  dashboardBody(
+body <-  shinydashboard::dashboardBody(
   useShinyjs(),
   fluidRow(
     column(width = 5,
-           tabBox(
+           shinydashboard::tabBox(
              title = "Inputs",
              # The id lets us use input$tabset1 on the server to find the current tab
              id = "tabset1", width = NULL,height = "600px", 
@@ -109,7 +109,7 @@ body <-  dashboardBody(
            )
     ),
     column(width = 7,
-           tabBox(
+           shinydashboard::tabBox(
              #title = "Oyt",
              id = "tabset2", width = NULL,height = "600px", 
              about_panel,
@@ -117,7 +117,7 @@ body <-  dashboardBody(
              tabPanel("Outputs",
                       box(
                         #                    solidHeader = TRUE,status = "primary",
-                        leafletOutput("mymap", height=400),
+                        leaflet::leafletOutput("mymap", height=400),
                         width = NULL,
                         collapsible = FALSE),#,collapsed=TRUE),
                       box(
@@ -151,8 +151,8 @@ body <-  dashboardBody(
 )
 
 
-dashboardPage(
+shinydashboard::dashboardPage(
   header,
-  dashboardSidebar(disable = TRUE),
+  shinydashboard::dashboardSidebar(disable = TRUE),
   body
 )

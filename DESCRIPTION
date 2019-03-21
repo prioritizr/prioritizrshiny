@@ -38,7 +38,7 @@ Imports:
 Suggests: 
     testthat
 Depends:
-    R(>= 3.3.0),
+    R(>= 3.3.0)
 License: GPL-3
 LazyData: true
 SystemRequirements: C++11

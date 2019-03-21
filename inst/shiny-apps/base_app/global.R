@@ -1,5 +1,12 @@
 library(prioritizrshiny)
 library(rgdal)
 library(shinyjs)
+library(leaflet)
+library(rgeos)
+library(raster)
+library(sp)
+library(rhandsontable)
+library(rgdal)
+library(shinydashboard)
 
 source("to_source.R")
