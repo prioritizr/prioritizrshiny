@@ -5,7 +5,7 @@ header <- shinydashboard::dashboardHeader(
 )
 
 body <-  shinydashboard::dashboardBody(
-  useShinyjs(),
+  shinyjs::useShinyjs(),
   fluidRow(
     column(width = 5,
            shinydashboard::tabBox(

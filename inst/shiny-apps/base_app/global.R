@@ -1,4 +1,4 @@
-about_panel <- tabPanel("About", 
+about_panel <- shiny::tabPanel("About", 
                         h4("Systematic conservation prioritization in R"),
                         p("Prioritizr is an R package for solving systematic conservation prioritization problems 
                         using integer linear programming (ILP) techniques. The package offers a flexible interface 
@@ -43,6 +43,6 @@ about_panel <- tabPanel("About",
                         #tags$a(href="http://www.wilburforce.org/", target="_blank", tags$img(src='sop1.png'))
 )
 
-howto_panel <- tabPanel("Instructions", 
+howto_panel <- shiny::tabPanel("Instructions", 
                         h4("How to use this tool?"),
                         p("This "))
