@@ -3,7 +3,7 @@ base::options(shiny.maxRequestSize=10000*1024^2)
 function(input, output, session) {
   
   
-  pu <- reactive({
+  pu <- shiny::reactive({
     shpDF <- input$x
     
     req(shpDF)
@@ -18,19 +18,19 @@ function(input, output, session) {
     shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
     shpPath <- paste(uploadDirectory)#, shpName, sep="/")
     setwd(prevWD)
-    pu <- readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
+    pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),
     
-    updateSelectInput(session, "cost_col", choices = vars)
-    updateSelectInput(session, "feat_col", choices = vars)
+    shiny::updateSelectInput(session, "cost_col", choices = vars)
+    shiny::updateSelectInput(session, "feat_col", choices = vars)
     
     return (pu)
   })
   
   
-  prob <- eventReactive(input$Bproblem, {
+  prob <- shiny::eventReactive(input$Bproblem, {
     pu <- pu()
     
     p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
@@ -46,7 +46,7 @@ function(input, output, session) {
     if(input$Bsolve == 0)
       return(NULL)    
     
-    return(isolate({
+    return(shiny::isolate({
       
       p <- prob()
       
@@ -100,12 +100,12 @@ function(input, output, session) {
     
   })
   
-  observe ({  solv()
+  shiny::observe ({  solv()
   }) 
   #################################################################################################################
   #shinyjs checks
   #################################################################################################################
-  observe({
+  shiny::observe({
     if (class(pu()) == "SpatialPolygonsDataFrame") {
       shinyjs::show("cost_col")
     } else {
@@ -113,7 +113,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (class(pu()) == "SpatialPolygonsDataFrame") {
       shinyjs::show("feat_col")
     } else {
@@ -121,7 +121,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$objective != "min_set") {
       shinyjs::show("budget")
     } else {
@@ -129,7 +129,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$objective == "max_phylo") {
       shinyjs::show("phylo")
     } else {
@@ -137,7 +137,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$objective %in% c("min_set", "max_feat", "max_phylo")) {
       shinyjs::show("targets")
     } else {
@@ -145,7 +145,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$glob_tar == "global") {
       shinyjs::show("tar_all")
     } else {
@@ -154,7 +154,7 @@ function(input, output, session) {
   })
   
   
-  observe({
+  shiny::observe({
     if (input$penalty == "bound") {
       shinyjs::show("pen_bound")
     } else {
@@ -162,7 +162,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$penalty == "conn") {
       shinyjs::show("pen_conn")
     } else {
@@ -170,7 +170,7 @@ function(input, output, session) {
     }
   })
   
-  observe({
+  shiny::observe({
     if (input$Bproblem) {
       shinyjs::show("to_solve")
     } else {
@@ -185,7 +185,7 @@ function(input, output, session) {
   #End shinyjs checks
   #################################################################################################################
   
-  output$contents <- renderPrint({
+  output$contents <- shiny::renderPrint({
     
     #req(input$x)
     #pp <- prob()
@@ -199,28 +199,28 @@ function(input, output, session) {
   ## Output map
   ########################################################
   
-  output$mymap <- renderLeaflet({
+  output$mymap <- leaflet::renderLeaflet({
     
     sol <- solv()
     sol$solution_1 <- factor(sol$solution_1)
     
-    pal.sol <- colorFactor("YlOrRd", sol$solution_1)
+    pal.sol <- leaflet::colorFactor("YlOrRd", sol$solution_1)
     
-    leaflet(sol) %>% addTiles() %>%
+    leaflet::leaflet(sol) %>% leaflet::addTiles() %>%
       # Base groups
-      addProviderTiles("Esri.WorldStreetMap",group = "StreetMap") %>%
-      addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
-      addProviderTiles("Stamen.Terrain", group = "Terrain") %>%
-      addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5, group = "solution",
+      leaflet::addProviderTiles("Esri.WorldStreetMap",group = "StreetMap") %>%
+      leaflet::addProviderTiles("Esri.WorldImagery", group = "Aerial") %>%
+      leaflet::addProviderTiles("Stamen.Terrain", group = "Terrain") %>%
+      leaflet::addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5, group = "solution",
                   opacity = 1.0, fillOpacity = 1,
                   fillColor = colorFactor("YlOrRd", sol$solution_1)(sol$solution_1),
                   highlightOptions = highlightOptions(color = "white", weight = 2,
                                                       bringToFront = TRUE)) %>%
-      addScaleBar(position = "topleft") %>%
-      addLayersControl(baseGroups = c("StreetMap", "Aerial", "Terrain"),
+      leaflet::addScaleBar(position = "topleft") %>%
+      leaflet::addLayersControl(baseGroups = c("StreetMap", "Aerial", "Terrain"),
                        overlayGroups = c("solution"),
                        options = layersControlOptions(collapsed = FALSE)) %>%
-      addLegend(pal = pal.sol, values = sol$solution_1, 
+      leaflet::addLegend(pal = pal.sol, values = sol$solution_1, 
                position = "topright",title = "Solution", group = "solution") 
   })
   
