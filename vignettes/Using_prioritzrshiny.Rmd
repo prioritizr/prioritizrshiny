@@ -1,0 +1,27 @@
+---
+title: "Using prioritzrshiny"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using_prioritzrshiny}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(prioritizrshiny)
+knitr::kable(mtcars)
+#that
+```
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |

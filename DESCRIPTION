@@ -1,7 +1,7 @@
 Package: prioritizrshiny
 Type: Package
 Title: Shiny interface for Systematic Conservation Prioritization in R
-Version: 0.0.0.1
+Version: 0.0.0.9000
 Authors@R: c(person(c('Richard'), 'Schuster',
                email='richard.schuster@glel.carleton.ca', role = c('aut', 'cre')),
              person(c('Jeffrey', 'O'), 'Hanson',
@@ -33,12 +33,13 @@ Imports:
     rgdal,
     shinyjs,
     shiny,
-    shinydashboard,
-    prioritizr
+    shinydashboard
 Suggests: 
-    testthat
+    testthat,
+    rmarkdown
 Depends:
-    R(>= 3.3.0)
+    R(>= 3.3.0),
+    prioritizr
 License: GPL-3
 LazyData: true
 SystemRequirements: C++11

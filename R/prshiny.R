@@ -8,8 +8,7 @@ NULL
 #'
 #' @param ... not used.
 #'
-#' @details
-#' Need to provide details for the function.
+#' @details Need to provide details for the function.
 #'
 #' @return Starts a Shiny app wrapper for prioritzr functions.
 #'
