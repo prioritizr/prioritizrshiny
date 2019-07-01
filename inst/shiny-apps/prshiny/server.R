@@ -19,6 +19,7 @@ function(input, output, session) {
     shpPath <- paste(uploadDirectory)#, shpName, sep="/")
     setwd(prevWD)
     pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
+    pu <- sp::spTransform(aa, crs("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),

@@ -117,7 +117,7 @@ body <-  shinydashboard::dashboardBody(
              shiny::tabPanel("Outputs",
                       shinydashboard::box(
                         #                    solidHeader = TRUE,status = "primary",
-                        leaflet::leafletOutput("mymap", height=400),
+                        leaflet::leafletOutput("mymap", height=600),
                         width = NULL,
                         collapsible = FALSE),#,collapsed=TRUE),
                       shinydashboard::box(
