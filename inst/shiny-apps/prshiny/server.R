@@ -62,7 +62,7 @@ function(input, output, session) {
       
       p <- prob()
       
-      #add objective  
+      # add objective  
       if (input$objective == "min_set"){
         p <- p %>% prioritizr::add_min_set_objective()
         
@@ -78,12 +78,12 @@ function(input, output, session) {
       } else if (input$objective == "max_util"){
         p <- p %>% prioritizr::add_max_utility_objective(input$budget)
         
-      } #else{
-      #Throw error or show warning
-      #}
+      } else{
+        stop("Invalide objective function")
+      }
       
       
-      #add targets
+      # add targets
       if (input$objective %in% c("min_set", "max_feat", "max_phylo")){
         
         if(input$glob_tar == "global"){
@@ -104,6 +104,18 @@ function(input, output, session) {
         }
       }
       
+      # add Constraints
+      
+      # add Penalties
+      if (input$penalty == "pen_bound"){
+        p <- p %>% prioritizr::add_boundary_penalties(penalty = input$bound_penalty, 
+                                                      edge_factor = input$edge_factor, 
+                                                      data = input$boundary_data)
+        
+      } else if (input$penalty == "pen_conn"){
+        p <- p %>% prioritizr::add_connectivity_penalties(penalty = input$conn_penalty, 
+                                                      data = input$connectivity_data)
+      }
       
       s <- prioritizr::solve(p)
       
@@ -114,6 +126,8 @@ function(input, output, session) {
   
   shiny::observe ({  solv()
   }) 
+  
+  
   #################################################################################################################
   #shinyjs checks
   #################################################################################################################

@@ -102,7 +102,7 @@ body <-  shinydashboard::dashboardBody(
                                      selected = NULL, multiple = FALSE),
                       shinyjs::hidden(
                         shiny::div(id = "pen_bound",
-                            shiny::numericInput("penalty", "Penalty", 0),
+                            shiny::numericInput("bound_penalty", "Penalty", 0),
                             shiny::numericInput("edge_factor", "Edge factor", 0),
                             shiny::fileInput('boundary_data', 'Boundary data (optional)',multiple=TRUE)
                             )
@@ -110,7 +110,7 @@ body <-  shinydashboard::dashboardBody(
                       
                       shinyjs::hidden(
                         shiny::div(id = "pen_conn",
-                            shiny::numericInput("penalty", "Penalty", 0),
+                            shiny::numericInput("conn_penalty", "Penalty", 0),
                             shiny::fileInput('connectivity_data', 'Connectivity data',multiple=TRUE)
                         )
                       )
