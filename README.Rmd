@@ -39,13 +39,10 @@ devtools::install_github("prioritizr/prioritizrshiny")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+```{r example, eval = FALSE}
 library(prioritizrshiny)
 
-# list available shiny apps
-prshiny_apps()
-
-# run the basic app
-#prshiny("base_app")
+# run the Shiny app
+prshiny()
 
 ```
