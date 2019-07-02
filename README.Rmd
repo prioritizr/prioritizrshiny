@@ -24,7 +24,8 @@ The goal of prioritizrshiny is to ...
 The latest official version of the _prioritizrshiny R_ package can be installed using the following _R_ code.
 
 ```{r, eval = FALSE}
-install.packages("prioritizrshiny", repos = "https://cran.rstudio.com/")
+#Package is not on CRAN yet
+#install.packages("prioritizrshiny", repos = "https://cran.rstudio.com/")
 ```
 
 Alternatively, the latest development version can be installed using the following code. Please note that while developmental versions may contain additional features not present in the official version, they may also contain coding errors.

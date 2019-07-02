@@ -16,7 +16,8 @@ The latest official version of the *prioritizrshiny R* package can be
 installed using the following *R* code.
 
 ``` r
-install.packages("prioritizrshiny", repos = "https://cran.rstudio.com/")
+#Package is not on CRAN yet
+#install.packages("prioritizrshiny", repos = "https://cran.rstudio.com/")
 ```
 
 Alternatively, the latest development version can be installed using the
