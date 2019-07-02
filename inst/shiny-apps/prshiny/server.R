@@ -42,13 +42,13 @@ function(input, output, session) {
   })
   
   
-  prob <- shiny::eventReactive(input$Bproblem, {
-    pu <- pu()
-    
-    p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
-    
-    return(p)
-  })
+  # prob <- shiny::eventReactive(input$Bproblem, {
+  #   pu <- pu()
+  #   
+  #   p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
+  #   
+  #   return(p)
+  # })
   
   solv <- reactive({ 
     # Don't do anything until after the first button push.
@@ -60,7 +60,11 @@ function(input, output, session) {
     
     return(shiny::isolate({
       
-      p <- prob()
+      pu <- pu()
+      
+      p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
+      
+      # p <- prob()
       
       # add objective  
       if (input$objective == "min_set"){
@@ -107,12 +111,12 @@ function(input, output, session) {
       # add Constraints
       
       # add Penalties
-      if (input$penalty == "pen_bound"){
+      if (input$penalty == "bound"){
         p <- p %>% prioritizr::add_boundary_penalties(penalty = input$bound_penalty, 
                                                       edge_factor = input$edge_factor, 
                                                       data = input$boundary_data)
         
-      } else if (input$penalty == "pen_conn"){
+      } else if (input$penalty == "conn"){
         p <- p %>% prioritizr::add_connectivity_penalties(penalty = input$conn_penalty, 
                                                       data = input$connectivity_data)
       }
