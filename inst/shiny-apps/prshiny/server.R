@@ -272,6 +272,7 @@ function(input, output, session) {
       Runtime = round(attributes(ss)$runtime[[1]],0), 
       Objective = round(attributes(ss)$objective[[1]],0),
       pus = round(sum(ss$solution_1>0)/length(ss$solution_1)*100,2),
+      cost = round(sum(ss@data$cost[ss$solution_1>0], na.rm = TRUE),0),
       t(round(colSums(ss_dat_red[ss$solution_1>0, ])/
                 colSums(ss_dat_red)*100,2))
       
