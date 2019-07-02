@@ -4,21 +4,30 @@ function(input, output, session) {
   
   
   pu <- shiny::reactive({
-    shpDF <- input$x
     
-    req(shpDF)
-    
-    #shpDF <- input$x
-    prevWD <- getwd()
-    uploadDirectory <- dirname(shpDF$datapath[1])
-    setwd(uploadDirectory)
-    for (i in 1:nrow(shpDF)){
-      file.rename(shpDF$datapath[i], shpDF$name[i])
+    if(input$input_choice == "example"){
+      
+      pu <- tas
+    } else {
+      shpDF <- input$file
+      
+      req(shpDF)
+      
+      #shpDF <- input$file
+      prevWD <- getwd()
+      uploadDirectory <- dirname(shpDF$datapath[1])
+      setwd(uploadDirectory)
+      for (i in 1:nrow(shpDF)){
+        file.rename(shpDF$datapath[i], shpDF$name[i])
+      }
+      shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
+      shpPath <- paste(uploadDirectory)#, shpName, sep="/")
+      setwd(prevWD)
+      pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
+      
     }
-    shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
-    shpPath <- paste(uploadDirectory)#, shpName, sep="/")
-    setwd(prevWD)
-    pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
+ 
+    
     if(!is.na(raster::projection(pu))){
       pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
     }
@@ -181,6 +190,15 @@ function(input, output, session) {
     }
   })
   
+  shiny::observe({
+    if (input$input_choice == "example") {
+      shinyjs::show("example")
+      shinyjs::hide("file")
+    } else {
+      shinyjs::show("file")
+      shinyjs::hide("example")
+    }
+  })
   
   
   
@@ -225,7 +243,7 @@ function(input, output, session) {
   
   output$contents <- DT::renderDT(options = list(scrollX = TRUE), {
     
-    #req(input$x)
+    #req(input$file)
     #pp <- prob()
     ss <- solv()
     

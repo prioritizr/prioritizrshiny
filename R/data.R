@@ -1,0 +1,17 @@
+#' Vector-based data for use as prioritzrshiny example
+#'
+#' A dataset containing the values, conservation status, and features for 1130 planning units 
+#' in Tasmania.
+#'
+#' @format A SpatialPolygonsDataFrame with 1130 planning units and 67 variables:
+#' \describe{
+#'   \item{id}{Planning unit id}
+#'   \item{cost}{Unimproved land values}
+#'   \item{status}{Current protection status of a planning unit}
+#'   \item{locked_in}{Vector of planning units to lock into a solution}
+#'   \item{locked_out}{Vector of planning units to lock out of a solution}
+#'   \item{layer_1 - layer_63}{Distribution of vegetation classes in Tasmania}
+#'   ...
+#' }
+#' @source \url{https://prioritizr.net/articles/tasmania.html}
+"tas"

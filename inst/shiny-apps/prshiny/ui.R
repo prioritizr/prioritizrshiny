@@ -18,7 +18,19 @@ body <-  shinydashboard::dashboardBody(
                shiny::h4("Upload your data"),
                shiny::p("By specifying the inputs below you can supply data to generate the problem"),
                shiny::br(),
-               shiny::fileInput('x', 'x',multiple=TRUE),
+               shiny::selectInput('input_choice', 'Choose Input data type', 
+                                   choices = c("Example data" = "example",
+                                               "Upload data" = "upload"
+                                               )),
+               shiny::selectInput('example', 'What dataset would you like to use?',
+                                  choices = c("Tasmania" = "tas",
+                                              "Salt Spring Island" = "salt"
+                                              )),
+               
+               shinyjs::hidden(
+                shiny::fileInput('file', 'Input files',multiple=TRUE)
+               ),
+               
                shinyjs::hidden(
                  shiny::selectizeInput("cost_col", "Select cost column", choices = NULL, # no choices before uploading 
                                selected = NULL, multiple = FALSE)
