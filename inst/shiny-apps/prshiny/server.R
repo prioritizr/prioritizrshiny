@@ -19,7 +19,9 @@ function(input, output, session) {
     shpPath <- paste(uploadDirectory)#, shpName, sep="/")
     setwd(prevWD)
     pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
-    pu <- sp::spTransform(aa, crs("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
+    if(!is.na(raster::projection(pu))){
+      pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
+    }
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),
@@ -53,19 +55,19 @@ function(input, output, session) {
       
       #add objective  
       if (input$objective == "min_set"){
-        p <- p %>% add_min_set_objective()
+        p <- p %>% prioritizr::add_min_set_objective()
         
       } else if (input$objective == "max_cov"){
-        p <- p %>% add_max_cover_objective(input$budget)
+        p <- p %>% prioritizr::add_max_cover_objective(input$budget)
         
       } else if (input$objective == "max_feat"){
-        p <- p %>% add_max_features_objective(input$budget)
+        p <- p %>% prioritizr::add_max_features_objective(input$budget)
         
       } else if (input$objective == "max_phylo"){
-        p <- p %>% add_max_phylo_objective(input$budget, input$phylo)
+        p <- p %>% prioritizr::add_max_phylo_objective(input$budget, input$phylo)
         
       } else if (input$objective == "max_util"){
-        p <- p %>% add_max_utility_objective(input$budget)
+        p <- p %>% prioritizr::add_max_utility_objective(input$budget)
         
       } #else{
       #Throw error or show warning
@@ -82,13 +84,13 @@ function(input, output, session) {
         }
         
         if(input$tar_type == "rel_tar"){
-          p <- p %>% add_relative_targets(tmp_tar)
+          p <- p %>% prioritizr::add_relative_targets(tmp_tar)
           
         } else if(input$tar_type == "abs_tar"){
-          p <- p %>% add_relative_targets(tmp_tar)
+          p <- p %>% prioritizr::add_relative_targets(tmp_tar)
           
         } else if(input$tar_type == "log_tar"){
-          p <- p %>% add_loglinear_targets(tmp_tar)
+          p <- p %>% prioritizr::add_loglinear_targets(tmp_tar)
           
         }
       }
@@ -186,16 +188,7 @@ function(input, output, session) {
   #End shinyjs checks
   #################################################################################################################
   
-  output$contents <- shiny::renderPrint({
-    
-    #req(input$x)
-    #pp <- prob()
-    ss <- solv()
-    
-    ss
-    
-  })
-  
+ 
   ########################################################
   ## Output map
   ########################################################
@@ -214,19 +207,46 @@ function(input, output, session) {
       leaflet::addProviderTiles("Stamen.Terrain", group = "Terrain") %>%
       leaflet::addPolygons(color = "#444444", weight = 1, smoothFactor = 0.5, group = "solution",
                   opacity = 1.0, fillOpacity = 1,
-                  fillColor = colorFactor("YlOrRd", sol$solution_1)(sol$solution_1),
-                  highlightOptions = highlightOptions(color = "white", weight = 2,
+                  fillColor = leaflet::colorFactor("YlOrRd", sol$solution_1)(sol$solution_1),
+                  highlightOptions = leaflet::highlightOptions(color = "white", weight = 2,
                                                       bringToFront = TRUE)) %>%
       leaflet::addScaleBar(position = "topleft") %>%
       leaflet::addLayersControl(baseGroups = c("StreetMap", "Aerial", "Terrain"),
                        overlayGroups = c("solution"),
-                       options = layersControlOptions(collapsed = FALSE)) %>%
+                       options = leaflet::layersControlOptions(collapsed = FALSE)) %>%
       leaflet::addLegend(pal = pal.sol, values = sol$solution_1, 
                position = "topright",title = "Solution", group = "solution") 
   })
   
   
- 
+  ########################################################
+  ## Output Table
+  ########################################################
+  
+  output$contents <- DT::renderDT(options = list(scrollX = TRUE), {
+    
+    #req(input$x)
+    #pp <- prob()
+    ss <- solv()
+    
+    ss_dat_red <- ss@data[,input$feat_col]
+    
+    res_tbl <- data.frame(
+      Status = attributes(ss)$status[[1]],
+      Runtime = round(attributes(ss)$runtime[[1]],0), 
+      Objective = round(attributes(ss)$objective[[1]],0),
+      pus = round(sum(ss$solution_1>0)/length(ss$solution_1)*100,2),
+      t(round(colSums(ss_dat_red[ss$solution_1>0, ])/
+                colSums(ss_dat_red)*100,2))
+      
+    )
+    
+    res_tbl
+    
+    
+  })
+  
+  
   
   
   
