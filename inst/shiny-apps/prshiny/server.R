@@ -6,8 +6,15 @@ function(input, output, session) {
   pu <- shiny::reactive({
     
     if(input$input_choice == "example"){
+      if(input$example == "tas"){
+        pu <- tas  
+      } else if (input$example == "salt"){
+        pu <- salt
+      } else {
+        showNotification("Invalid example data set selected.", type = "error")
+      }
+        
       
-      pu <- tas
     } else {
       shpDF <- input$file
       
@@ -26,6 +33,8 @@ function(input, output, session) {
       pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
       
     }
+    
+    #Before proceeding, check that input type is valid
  
     
     if(!is.na(raster::projection(pu))){
