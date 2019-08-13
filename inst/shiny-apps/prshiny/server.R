@@ -2,10 +2,21 @@ base::options(shiny.maxRequestSize=10000*1024^2)
 
 function(input, output, session) {
   
+  # shiny::observeEvent(input$input_choice == "example", {
+  #   shiny::showModal(modalDialog(
+  #     title = "Important message",
+  #     "This is an important message!"
+  #   ))
+  # })
   
   pu <- shiny::reactive({
     
     if(input$input_choice == "example"){
+      shiny::showModal(modalDialog(
+        title = "Important message",
+        "This is an important message!"
+      ))
+      
       if(input$example == "tas"){
         pu <- tas  
       } else if (input$example == "salt"){
