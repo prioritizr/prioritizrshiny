@@ -4,13 +4,9 @@ function(input, output, session) {
   
   pu <- shiny::reactive({
     
+
     if(input$input_choice == "example"){
-      
-    #   shiny::showModal(modalDialog(
-    #     title = "Important message",
-    #     "This is an important message!"
-    #   ))
-      
+
       if(input$example == "tas"){
         pu <- tas  
       } else if (input$example == "salt"){
@@ -23,7 +19,7 @@ function(input, output, session) {
     } else if(input$input_choice == "upload"){
       shpDF <- input$file
       
-      req(shpDF)
+      shiny::req(shpDF)
       
       #shpDF <- input$file
       prevWD <- getwd()
@@ -53,9 +49,7 @@ function(input, output, session) {
       
     }
     vars <- names(pu)
-    #selectizeInput("singlespp", "Select single speices from the List", 
-    #               choices = names(output.pu),
-    
+
     shiny::updateSelectizeInput(session, "cost_col", choices = vars)
     shiny::updateSelectizeInput(session, "feat_col", choices = vars)
     
@@ -157,7 +151,7 @@ function(input, output, session) {
   #shinyjs checks
   #################################################################################################################
 
-  
+  #Data tab
   shiny::observe({
     if (input$input_choice == "example") {
       shinyjs::show("example")
@@ -169,7 +163,7 @@ function(input, output, session) {
   })
   
   shiny::observe({
-    if (input$input_choice == "example") {
+    if (shiny::isTruthy(input$file) | input$input_choice == "example") {
       shinyjs::show("cost_col")
     } else {
       shinyjs::hide("cost_col")
@@ -177,13 +171,14 @@ function(input, output, session) {
   })
   
   shiny::observe({
-    if (input$input_choice == "example") {
+    if (shiny::isTruthy(input$file) | input$input_choice == "example") {
       shinyjs::show("feat_col")
     } else {
       shinyjs::hide("feat_col")
     }
   })
   
+  #Objective tab
   shiny::observe({
     if (input$objective != "min_set") {
       shinyjs::show("budget")
@@ -216,7 +211,9 @@ function(input, output, session) {
     }
   })
   
+  #Constraints tab
   
+  #Penalties tab
   shiny::observe({
     if (input$penalty == "bound") {
       shinyjs::show("pen_bound")
@@ -233,6 +230,7 @@ function(input, output, session) {
     }
   })
   
+  #'Setup and solve the problem' section
   shiny::observe({
     if (input$Bproblem) {
       shinyjs::show("to_solve")
