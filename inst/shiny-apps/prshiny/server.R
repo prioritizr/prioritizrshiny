@@ -2,20 +2,14 @@ base::options(shiny.maxRequestSize=10000*1024^2)
 
 function(input, output, session) {
   
-  # shiny::observeEvent(input$input_choice == "example", {
-  #   shiny::showModal(modalDialog(
-  #     title = "Important message",
-  #     "This is an important message!"
-  #   ))
-  # })
-  
   pu <- shiny::reactive({
     
     if(input$input_choice == "example"){
-      shiny::showModal(modalDialog(
-        title = "Important message",
-        "This is an important message!"
-      ))
+      
+    #   shiny::showModal(modalDialog(
+    #     title = "Important message",
+    #     "This is an important message!"
+    #   ))
       
       if(input$example == "tas"){
         pu <- tas  
@@ -26,7 +20,7 @@ function(input, output, session) {
       }
         
       
-    } else {
+    } else if(input$input_choice == "upload"){
       shpDF <- input$file
       
       req(shpDF)
@@ -43,6 +37,8 @@ function(input, output, session) {
       setwd(prevWD)
       pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
       
+    } else {
+      showNotification("Input data choice is not valid.", type = "error")
     }
     
     #Before proceeding, check that input type is valid
@@ -60,8 +56,8 @@ function(input, output, session) {
     #selectizeInput("singlespp", "Select single speices from the List", 
     #               choices = names(output.pu),
     
-    shiny::updateSelectInput(session, "cost_col", choices = vars)
-    shiny::updateSelectInput(session, "feat_col", choices = vars)
+    shiny::updateSelectizeInput(session, "cost_col", choices = vars)
+    shiny::updateSelectizeInput(session, "feat_col", choices = vars)
     
     return (pu)
   })
@@ -160,6 +156,18 @@ function(input, output, session) {
   #################################################################################################################
   #shinyjs checks
   #################################################################################################################
+
+  
+  shiny::observe({
+    if (input$input_choice == "example") {
+      shinyjs::show("example")
+      shinyjs::hide("file")
+    } else {
+      shinyjs::show("file")
+      shinyjs::hide("example")
+    }
+  })
+  
   shiny::observe({
     if (input$input_choice == "example") {
       shinyjs::show("cost_col")
@@ -233,17 +241,7 @@ function(input, output, session) {
     }
   })
   
-  shiny::observe({
-    if (input$input_choice == "example") {
-      shinyjs::show("example")
-      shinyjs::hide("file")
-    } else {
-      shinyjs::show("file")
-      shinyjs::hide("example")
-    }
-  })
-  
-  
+
   
   #################################################################################################################
   #End shinyjs checks

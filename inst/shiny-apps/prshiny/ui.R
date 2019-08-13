@@ -22,14 +22,16 @@ body <-  shinydashboard::dashboardBody(
                                    choices = c("Upload data" = "upload",
                                                "Example data" = "example"
                                                )),
-               shiny::selectInput('example', 'What dataset would you like to use?',
+               shinyjs::hidden(
+                shiny::selectInput('example', 'What dataset would you like to use?',
                                   choices = c("Tasmania" = "tas",
                                               "Salt Spring Island" = "salt"
-                                              )),
-               
-               shinyjs::hidden(
-                shiny::fileInput('file', 'Input files',multiple=TRUE)
+                                              ))
                ),
+               
+               # shinyjs::hidden(
+                shiny::fileInput('file', 'Input files',multiple=TRUE),
+               # ),
                
                shinyjs::hidden(
                  shiny::selectizeInput("cost_col", "Select cost column", choices = NULL, # no choices before uploading 
