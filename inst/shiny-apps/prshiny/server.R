@@ -57,14 +57,6 @@ function(input, output, session) {
   })
   
   
-  # prob <- shiny::eventReactive(input$Bproblem, {
-  #   pu <- pu()
-  #   
-  #   p <- prioritizr::problem(pu, features = input$feat_col, cost_column = input$cost_col)
-  #   
-  #   return(p)
-  # })
-  
   solv <- reactive({ 
     # Don't do anything until after the first button push.
     input$Bsolve
