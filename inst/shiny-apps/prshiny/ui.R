@@ -19,8 +19,8 @@ body <-  shinydashboard::dashboardBody(
                shiny::p("By specifying the inputs below you can supply data to generate the problem"),
                shiny::br(),
                shiny::selectInput('input_choice', 'Choose Input data type', 
-                                   choices = c("Example data" = "example",
-                                               "Upload data" = "upload"
+                                   choices = c("Upload data" = "upload",
+                                               "Example data" = "example"
                                                )),
                shiny::selectInput('example', 'What dataset would you like to use?',
                                   choices = c("Tasmania" = "tas",

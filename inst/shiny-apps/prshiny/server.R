@@ -38,7 +38,12 @@ function(input, output, session) {
  
     
     if(!is.na(raster::projection(pu))){
-      pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))
+      if(class(pu)[1] == "SpatialPolygonsDataFrame"){
+        pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))  
+      } else if (class(pu)[1] == "RasterStack"){
+        pu <- raster::projectRaster(pu , crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
+      }
+      
     }
     vars <- names(pu)
     #selectizeInput("singlespp", "Select single speices from the List", 
@@ -145,7 +150,7 @@ function(input, output, session) {
   #shinyjs checks
   #################################################################################################################
   shiny::observe({
-    if (class(pu()) == "SpatialPolygonsDataFrame") {
+    if (input$input_choice == "example") {
       shinyjs::show("cost_col")
     } else {
       shinyjs::hide("cost_col")
@@ -153,7 +158,7 @@ function(input, output, session) {
   })
   
   shiny::observe({
-    if (class(pu()) == "SpatialPolygonsDataFrame") {
+    if (input$input_choice == "example") {
       shinyjs::show("feat_col")
     } else {
       shinyjs::hide("feat_col")
