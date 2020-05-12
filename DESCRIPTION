@@ -24,7 +24,6 @@ Description: Conservation prioritization using integer
     should install the 'gurobi' optimizer
     (available from <http://www.gurobi.com/>).
 Imports:
-    DT,
     knitr,
     leaflet,
     prioritizr,

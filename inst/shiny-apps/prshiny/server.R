@@ -2,52 +2,62 @@ base::options(shiny.maxRequestSize=10000*1024^2)
 
 function(input, output, session) {
   
+  output$ui_cost_col <- renderUI({
+    shiny::selectizeInput("cost_col", "Select cost column", choices = NULL, # no choices before uploading 
+                          selected = NULL, multiple = FALSE)
+  })
+  
+  output$ui_feat_col <- renderUI({
+    shiny::selectizeInput("feat_col", "Select colum names of features", choices = NULL, # no choices before uploading 
+                        selected = NULL, multiple = TRUE)
+  })
+  
   pu <- shiny::reactive({
-    
+    pu <- tas
 
-    if(input$input_choice == "example"){
-
-      if(input$example == "tas"){
-        pu <- tas  
-      } else if (input$example == "salt"){
-        pu <- salt
-      } else {
-        showNotification("Invalid example data set selected.", type = "error")
-      }
-        
-      
-    } else if(input$input_choice == "upload"){
-      shpDF <- input$file
-      
-      shiny::req(shpDF)
-      
-      #shpDF <- input$file
-      prevWD <- getwd()
-      uploadDirectory <- dirname(shpDF$datapath[1])
-      setwd(uploadDirectory)
-      for (i in 1:nrow(shpDF)){
-        file.rename(shpDF$datapath[i], shpDF$name[i])
-      }
-      shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
-      shpPath <- paste(uploadDirectory)#, shpName, sep="/")
-      setwd(prevWD)
-      pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
-      
-    } else {
-      showNotification("Input data choice is not valid.", type = "error")
-    }
-    
-    #Before proceeding, check that input type is valid
- 
-    
-    if(!is.na(raster::projection(pu))){
-      if(class(pu)[1] == "SpatialPolygonsDataFrame"){
-        pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))  
-      } else if (class(pu)[1] == "RasterStack"){
-        pu <- raster::projectRaster(pu , crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
-      }
-      
-    }
+    # if(input$input_choice == "example"){
+    # 
+    #   if(input$example == "tas"){
+    #     pu <- tas  
+    #   } else if (input$example == "salt"){
+    #     pu <- salt
+    #   } else {
+    #     showNotification("Invalid example data set selected.", type = "error")
+    #   }
+    #     
+    #   
+    # } else if(input$input_choice == "upload"){
+    #   shpDF <- input$file
+    #   
+    #   shiny::req(shpDF)
+    #   
+    #   #shpDF <- input$file
+    #   prevWD <- getwd()
+    #   uploadDirectory <- dirname(shpDF$datapath[1])
+    #   setwd(uploadDirectory)
+    #   for (i in 1:nrow(shpDF)){
+    #     file.rename(shpDF$datapath[i], shpDF$name[i])
+    #   }
+    #   shpName <- shpDF$name[grep(x=shpDF$name, pattern="*.shp")]
+    #   shpPath <- paste(uploadDirectory)#, shpName, sep="/")
+    #   setwd(prevWD)
+    #   pu <- rgdal::readOGR(dsn=shpPath,layer=substr(shpName, 1, nchar(shpName) - 4) , stringsAsFactors = FALSE, GDAL1_integer64=TRUE)
+    #   
+    # } else {
+    #   showNotification("Input data choice is not valid.", type = "error")
+    # }
+    # 
+    # #Before proceeding, check that input type is valid
+    # 
+    # 
+    # if(!is.na(raster::projection(pu))){
+    #   if(class(pu)[1] == "SpatialPolygonsDataFrame"){
+    #     pu <- sp::spTransform(pu, sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "))  
+    #   } else if (class(pu)[1] == "RasterStack"){
+    #     pu <- raster::projectRaster(pu , crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
+    #   }
+    #   
+    # }
     vars <- names(pu)
 
     shiny::updateSelectizeInput(session, "cost_col", choices = vars)
@@ -144,32 +154,32 @@ function(input, output, session) {
   #################################################################################################################
 
   #Data tab
-  shiny::observe({
-    if (input$input_choice == "example") {
-      shinyjs::show("example")
-      shinyjs::hide("file")
-    } else {
-      shinyjs::show("file")
-      shinyjs::hide("example")
-    }
-  })
-  
-  shiny::observe({
-    if (shiny::isTruthy(input$file) | input$input_choice == "example") {
-      shinyjs::show("cost_col")
-    } else {
-      shinyjs::hide("cost_col")
-    }
-  })
-  
-  shiny::observe({
-    if (shiny::isTruthy(input$file) | input$input_choice == "example") {
-      shinyjs::show("feat_col")
-    } else {
-      shinyjs::hide("feat_col")
-    }
-  })
-  
+  # shiny::observe({
+  #   if (input$input_choice == "example") {
+  #     shinyjs::show("example")
+  #     shinyjs::hide("file")
+  #   } else {
+  #     shinyjs::show("file")
+  #     shinyjs::hide("example")
+  #   }
+  # })
+  # 
+  # shiny::observe({
+  #   if (shiny::isTruthy(input$file) | input$input_choice == "example") {
+  #     shinyjs::show("ui_cost_col")
+  #   } else {
+  #     shinyjs::hide("ui_cost_col")
+  #   }
+  # })
+  # 
+  # shiny::observe({
+  #   if (shiny::isTruthy(input$file) | input$input_choice == "example") {
+  #     shinyjs::show("ui_feat_col")
+  #   } else {
+  #     shinyjs::hide("ui_feat_col")
+  #   }
+  # })
+
   #Objective tab
   shiny::observe({
     if (input$objective != "min_set") {
@@ -178,7 +188,7 @@ function(input, output, session) {
       shinyjs::hide("budget")
     }
   })
-  
+
   shiny::observe({
     if (input$objective == "max_phylo") {
       shinyjs::show("phylo")
@@ -186,7 +196,7 @@ function(input, output, session) {
       shinyjs::hide("phylo")
     }
   })
-  
+
   shiny::observe({
     if (input$objective %in% c("min_set", "max_feat", "max_phylo")) {
       shinyjs::show("targets")
@@ -194,7 +204,7 @@ function(input, output, session) {
       shinyjs::hide("targets")
     }
   })
-  
+
   shiny::observe({
     if (input$glob_tar == "global") {
       shinyjs::show("tar_all")
@@ -236,6 +246,12 @@ function(input, output, session) {
   #################################################################################################################
   #End shinyjs checks
   #################################################################################################################
+  
+  output$data_set_used <- renderText({ 
+    pu <- pu()
+    
+    class(pu)[1]
+  })
   
  
   ########################################################

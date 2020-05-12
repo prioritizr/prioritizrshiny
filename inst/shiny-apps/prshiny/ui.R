@@ -29,18 +29,16 @@ body <-  shinydashboard::dashboardBody(
                                               ))
                ),
                
-               # shinyjs::hidden(
+                # shinyjs::hidden(
                 shiny::fileInput('file', 'Input files',multiple=TRUE),
-               # ),
+                # ),
                
                shinyjs::hidden(
-                 shiny::selectizeInput("cost_col", "Select cost column", choices = NULL, # no choices before uploading 
-                               selected = NULL, multiple = FALSE)
-                ),
+                 shiny::uiOutput("ui_cost_col")
+               ),
                
                shinyjs::hidden(
-                 shiny::selectizeInput("feat_col", "Select colum names of features", choices = NULL, # no choices before uploading 
-                                selected = NULL, multiple = TRUE)
+                 shiny::uiOutput("ui_feat_col")
                ),
                
                #fileInput('features', 'features',multiple=TRUE),
@@ -50,6 +48,7 @@ body <-  shinydashboard::dashboardBody(
                #fileInput('rij_matrix', 'rij_matrix (optional)',multiple=TRUE),
                
                tags$hr(),
+               textOutput("data_set_used"),
           
               "Once"  
                ),
